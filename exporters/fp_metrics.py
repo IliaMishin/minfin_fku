@@ -153,5 +153,22 @@ class FPMetric2(FPMetric):
     columns = ("result_name", "num_checkpoints", "start_year",
             "end_year")
 
-
-
+class FPMetric1(FPMetric):
+    query = '''with asd(rfp_name,fp_result_indicator_id) as (select distinct
+    rfp_name,
+    fp_result_indicator_id 
+ from mufpresults_fp_result_indicators
+ join mufpresults on mufpresults.rfp_id = mufpresults_fp_result_indicators.rfp_id
+ where mufpresults.rfp_id = %(fp_id)s)
+ select  
+ asd.rfp_name,
+        case when r_value_fact = r_value_plan then r_value_fact else 'не достигнуто' end r_value_fact,
+        r_comment,
+    from asd,muresults
+    join mufpresults_fp_result_indicators on  mufpresults_fp_result_indicators.fp_result_indicator_id= muresults.r_value_id  
+    where  muresults.r_value_id in (select fp_result_indicator_id from asd) and org_name LIKE '%РОС%' 
+    group by 
+    asd.rfp_name,
+    r_value_fact,
+    r_comment'''
+    columns = ("result_name", "fact_value", "comment")
