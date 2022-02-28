@@ -153,8 +153,9 @@ class FPMetric2(FPMetric):
     columns = ("result_name", "num_checkpoints", "start_year",
             "end_year")
 
-class FPMetric1(FPMetric):
-    query = '''with asd(rfp_name,fp_result_indicator_id) as (select distinct
+class FPMetric3(FPMetric):
+    query = '''
+    with asd(rfp_name,fp_result_indicator_id) as (select distinct
     rfp_name,
     fp_result_indicator_id 
  from mufpresults_fp_result_indicators
